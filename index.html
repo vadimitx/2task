@@ -7,14 +7,17 @@
 		body {
 			background-color: #a3d5d3;
 		}		
-		input, img {
+		#upload, img {
 			display: block;
+		}
+		#range {
+			display: none;
 		}
 	</style>
 </head>
 <body>
 	<input type="file" id="upload" accept="image/jpeg">
-	<input type="range" id="range" value="0" min="0" max="0" step="1">
+	<input type="range" id="range" value="1" min="1" max="1000" step="1">
 	<img src="" alt="">
 	<script>
 		var imgObj = {}; 	// obj for save last img
@@ -25,31 +28,43 @@
 				var uploaded = uploadInput.files[0];
 				// check download files
 				if(uploadInput.files.length > 0){
-				//preview img
-				if(uploaded.lastModified === imgObj.lastModified && uploaded.name === imgObj.name){
-					alert("Данное изображение уже загружено");
-				}  else {
-					//check img
-					imgObj.lastModified = uploaded.lastModified; 
-					imgObj.name = uploaded.name;
-					var imgSize = uploaded.size / 1024 / 1024; // check size img 5mb
-					if(imgSize > 5){
-						alert("Превышен размер файла");
-					} else {
-						preview.src = window.URL.createObjectURL(uploaded);
-						
-					}				
+					// show range slider
+					rangeInput.style.display = "block";
+					//preview img
+					if(uploaded.lastModified === imgObj.lastModified && uploaded.name === imgObj.name){
+						alert("Данное изображение уже загружено");
+					}  else {
+						//check img
+						imgObj.lastModified = uploaded.lastModified; 
+						imgObj.name = uploaded.name;
+						var imgSize = uploaded.size / 1024 / 1024; // check size img 5mb
+						if(imgSize > 5){
+							alert("Превышен размер файла");
+						} else {
+							preview.style.width = "100px";
+							preview.style.height = "100px";
+							preview.src = window.URL.createObjectURL(uploaded);
+							
+						}				
 				}
 
 		}
 		});
 
-		rangeInput.addEventListener('change', function(){
+		rangeInput.addEventListener('change', function(e){
 			// check img download
 			if(imgObj.hasOwnProperty("name")){
 				// resize
+				resizePreview(e.target.value);
+
 			}
 		});
+
+		function resizePreview(rangeVal){
+			var newVal = 100 + +rangeVal;
+			preview.style.width = newVal + 'px';
+			preview.style.height = newVal + 'px';
+		}
 	</script>
 	</div>
 </body>
