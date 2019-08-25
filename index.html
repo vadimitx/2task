@@ -4,28 +4,51 @@
 	<meta charset="UTF-8">
 	<title>image uploader</title>
 	<style>
-		body {background-color: #a3d5d3;}
+		body {
+			background-color: #a3d5d3;
+		}		
+		input, img {
+			display: block;
+		}
 	</style>
 </head>
 <body>
-	<input type="file" accept="image/jpeg">
+	<input type="file" id="upload" accept="image/jpeg">
+	<input type="range" id="range" value="0" min="0" max="0" step="1">
 	<img src="" alt="">
 	<script>
-		var input = document.getElementsByTagName("input")[0];
-		var prev = document.getElementsByTagName("img")[0];
-		input.addEventListener('change', function(){
-			console.log(input.files);
-			//check img
-			if(input.files.length > 0){
-				var imgSize = input.files[0].size / 1024 / 1024; // check size img
-				if(imgSize > 5){
-					alert("Превышен размер файла");
-				} else {
-					prev.src = window.URL.createObjectURL(input.files[0]);
-					input.after(prev);
-				}				
-			}
+		var imgObj = {}; 	// obj for save last img
+		var uploadInput = document.getElementById("upload");
+		var rangeInput = document.getElementById("range");
+		var preview = document.getElementsByTagName("img")[0];
+		uploadInput.addEventListener('change', function(){
+				var uploaded = uploadInput.files[0];
+				// check download files
+				if(uploadInput.files.length > 0){
+				//preview img
+				if(uploaded.lastModified === imgObj.lastModified && uploaded.name === imgObj.name){
+					alert("Данное изображение уже загружено");
+				}  else {
+					//check img
+					imgObj.lastModified = uploaded.lastModified; 
+					imgObj.name = uploaded.name;
+					var imgSize = uploaded.size / 1024 / 1024; // check size img 5mb
+					if(imgSize > 5){
+						alert("Превышен размер файла");
+					} else {
+						preview.src = window.URL.createObjectURL(uploaded);
+						
+					}				
+				}
 
+		}
+		});
+
+		rangeInput.addEventListener('change', function(){
+			// check img download
+			if(imgObj.hasOwnProperty("name")){
+				// resize
+			}
 		});
 	</script>
 	</div>
