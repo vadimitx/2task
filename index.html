@@ -24,6 +24,7 @@
 		var uploadInput = document.getElementById("upload");
 		var rangeInput = document.getElementById("range");
 		var preview = document.getElementsByTagName("img")[0];
+		var timeout;
 		uploadInput.addEventListener('change', function(){
 				var uploaded = uploadInput.files[0];
 				// check download files
@@ -37,7 +38,8 @@
 						//check img
 						imgObj.lastModified = uploaded.lastModified; 
 						imgObj.name = uploaded.name;
-						var imgSize = uploaded.size / 1024 / 1024; // check size img 5mb
+						var imgSize = uploaded.size / 1024 / 1024; // size to mb
+						// check size img > 5mb
 						if(imgSize > 5){
 							alert("Превышен размер файла");
 						} else {
@@ -51,20 +53,33 @@
 		}
 		});
 
-		rangeInput.addEventListener('change', function(e){
+		//rangeInput change without releasing the mouse 
+		rangeInput.addEventListener('input', function(e){
 			// check img download
 			if(imgObj.hasOwnProperty("name")){
 				// resize
-				resizePreview(e.target.value);
+				if(timeout) clearTimeout(timeout); // clear last timeout
+				timeout = setTimeout(function(){
+					// do resize after sveral miliseconds
+					resizePreview(e.target.value);
+				}, 1000);
+				console.log(timeout);
+				}
+			
+		});
 
-			}
+		//releasing the mouse on rangeInput
+		rangeInput.addEventListener('mouseup', function(e){
+			clearTimeout(timeout); // clear last timeout
+			resizePreview(e.target.value); // resize preview
 		});
 
 		function resizePreview(rangeVal){
 			var newVal = 100 + +rangeVal;
-			preview.style.width = newVal + 'px';
-			preview.style.height = newVal + 'px';
+			preview.style.width = newVal +'px';
+			preview.style.height = newVal +'px';
 		}
+
 	</script>
 	</div>
 </body>
