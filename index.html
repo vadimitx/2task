@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {background-color: #a3d5d3;}
+	</style>
+</head>
+<body>
+	<div class="task">
+		<p>Задача 2. Сделать загрузчик картинки с превью (выбор одного файла, формат jpeg, размер не более 5 Мб). Если картинка в этой сессии уже загружалась, то она остаётся в превью. Сделать ползунок к превью, который управляет размером картинки. Добавить событие, по которому изменение размера картинки происходило бы раз в секунду и после спуска кнопки мыши.</p>
+	</div>
+	<div class="loader-pic">
+		<input type="file" onchange="previewFile()"><br>
+		<img src="" height="200" alt="Image preview...">
+	<script>
+		function previewFile() {
+		  var preview = document.querySelector('img');
+		  var file    = document.querySelector('input[type=file]').files[0];
+		  var reader  = new FileReader();
+
+		  reader.onloadend = function () {
+		    preview.src = reader.result;
+		  }
+
+		  if (file) {
+		    reader.readAsDataURL(file);
+		  } else {
+		    preview.src = "";
+		  }
+		}
+	</script>
+	</div>
+</body>
+</html>
