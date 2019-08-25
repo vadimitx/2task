@@ -9,10 +9,15 @@
 </head>
 <body>
 	<input type="file" accept="image/*">
+	<img src="" alt="">
 	<script>
 		var input = document.getElementsByTagName("input")[0];
+		var prev = document.getElementsByTagName("img")[0];
 		input.addEventListener('change', function(){
 			console.log(input.files);
+			prev.src = window.URL.createObjectURL(input.files[0]);
+			input.after(prev);
+			
 		});
 	</script>
 	</div>
