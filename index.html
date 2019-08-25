@@ -8,16 +8,24 @@
 	</style>
 </head>
 <body>
-	<input type="file" accept="image/*">
+	<input type="file" accept="image/jpeg">
 	<img src="" alt="">
 	<script>
 		var input = document.getElementsByTagName("input")[0];
 		var prev = document.getElementsByTagName("img")[0];
 		input.addEventListener('change', function(){
 			console.log(input.files);
-			prev.src = window.URL.createObjectURL(input.files[0]);
-			input.after(prev);
-			
+			//check img
+			if(input.files.length > 0){
+				var imgSize = input.files[0].size / 1024 / 1024; // check size img
+				if(imgSize > 5){
+					alert("Превышен размер файла");
+				} else {
+					prev.src = window.URL.createObjectURL(input.files[0]);
+					input.after(prev);
+				}				
+			}
+
 		});
 	</script>
 	</div>
